@@ -16,14 +16,16 @@ int main() {
 
     printf("Test 1: Basic Bump-Up Allocation\n");
     {
-        bump_allocator alloc;
-        bump_init(&alloc, mem_pool, POOL_SIZE);
-
-        int* int_ptr = (int*)bump_alloc(&alloc, sizeof(int));
+        // init allocator
+        bumpUpAllocator alloc;
+        bump_up_init(&alloc, mem_pool, POOL_SIZE);
+        // allocate 4 bytes (int)
+        int* int_ptr = (int*)bump_up_alloc(&alloc, sizeof(int));
         assert(int_ptr != NULL);
         *int_ptr = 42;
 
-        float* float_ptr = (float*)bump_alloc(&alloc, sizeof(float));
+        // allocate 4 bytes (float)
+        float* float_ptr = (float*)bump_up_alloc(&alloc, sizeof(float));
         assert(float_ptr != NULL);
         *float_ptr = 3.14f;
 
@@ -42,20 +44,21 @@ int main() {
 
     printf("Test 2: Bump-Up Out Memory\n");
     {        
-        bump_allocator alloc;
-        bump_init(&alloc, mem_pool, POOL_SIZE);
+        // init allocator
+        bumpUpAllocator alloc;
+        bump_up_init(&alloc, mem_pool, POOL_SIZE);
 
 
         // try to allocate more memory than available
-        void* res = bump_alloc(&alloc, POOL_SIZE + 1);
+        void* res = bump_up_alloc(&alloc, POOL_SIZE + 1);
         assert(res == NULL);
 
         // allocate something that should fit
-        res = bump_alloc(&alloc, POOL_SIZE / 2);
+        res = bump_up_alloc(&alloc, POOL_SIZE / 2);
         assert(res != NULL);
 
         // allocate something that does not fit
-        res = bump_alloc(&alloc, POOL_SIZE / 2 + 1);
+        res = bump_up_alloc(&alloc, POOL_SIZE / 2 + 1);
         assert(res == NULL);
 
         printf("    Passed!\n");
