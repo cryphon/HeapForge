@@ -1,12 +1,12 @@
 #include "bump_alloc.h"
 
-void bump_up_init(bumpUpAllocator* allocator, void* memory, size_t size) {
+void bump_up_init(bumpAllocator* allocator, void* memory, size_t size) {
     allocator->start = (char*)memory;
     allocator->curr = (char*)memory;
     allocator->end = allocator->start + size;
 }
 
-void* bump_up_alloc(bumpUpAllocator* allocator, size_t size) {
+void* bump_up_alloc(bumpAllocator* allocator, size_t size) {
     if(allocator->curr + size > allocator->end) { 
         return NULL;
     }
@@ -18,7 +18,7 @@ void* bump_up_alloc(bumpUpAllocator* allocator, size_t size) {
     return res;
 }
 
-void bump_up_reset(bumpUpAllocator* allocator) {
+void bump_up_reset(bumpAllocator* allocator) {
     allocator->curr = allocator->start;
 }
 

@@ -1,4 +1,5 @@
 #include "allocators.h"
+#include "utils.h"
 #include <stdio.h>
 #include <assert.h>
 
@@ -17,7 +18,7 @@ int main() {
     printf("Test 1: Basic Bump-Up Allocation\n");
     {
         // init allocator
-        bumpUpAllocator alloc;
+        bumpAllocator alloc;
         bump_up_init(&alloc, mem_pool, POOL_SIZE);
         // allocate 4 bytes (int)
         int* int_ptr = (int*)bump_up_alloc(&alloc, sizeof(int));
@@ -45,7 +46,7 @@ int main() {
     printf("Test 2: Bump-Up Out Memory\n");
     {        
         // init allocator
-        bumpUpAllocator alloc;
+        bumpAllocator alloc;
         bump_up_init(&alloc, mem_pool, POOL_SIZE);
 
 
@@ -63,5 +64,8 @@ int main() {
 
         printf("    Passed!\n");
     }
+
+    // dump bump-up region
+    dump_memory(mem_pool, POOL_SIZE, "(Bump-Up Region)");
     return 0;
 }
