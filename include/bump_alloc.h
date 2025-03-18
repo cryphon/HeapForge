@@ -16,5 +16,9 @@ typedef struct {
 
 void bump_up_init(bumpAllocator* allocator, void* memory, size_t size);
 void* bump_up_alloc(bumpAllocator* allocator, size_t size);
-void bump_up_free(bumpAllocator* allocator, void* memory, size_t size);
+void bump_up_free(bumpAllocator* allocator);
+void bump_down_init(bumpAllocator* allocator, void* memory, size_t size);
+void* bump_down_alloc(bumpAllocator* allocator, size_t size);
+void bump_down_free(bumpAllocator* allocator);
+
 #endif

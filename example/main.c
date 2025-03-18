@@ -67,5 +67,30 @@ int main() {
 
     // dump bump-up region
     dump_memory(mem_pool, POOL_SIZE, "(Bump-Up Region)");
+
+
+    printf("Test 3: Basic Bump-Down Allocation\n");
+    {
+        // init allocator
+        bumpAllocator alloc;
+        bump_down_init(&alloc, mem_pool, POOL_SIZE);
+        // allocate 4 bytes (int)
+        int* int_ptr = (int*)bump_down_alloc(&alloc, sizeof(int));
+        assert(int_ptr != NULL);
+        *int_ptr = 42;
+
+        // allocate 4 bytes (float)
+        float* float_ptr = (float*)bump_down_alloc(&alloc, sizeof(float));
+        assert(float_ptr != NULL);
+        *float_ptr = 3.14f;
+
+        // verify
+        assert(*int_ptr == 42);
+        assert(*float_ptr == 3.14f);
+
+        printf("    Passed!\n");
+    }
+
+    dump_memory(mem_pool, POOL_SIZE, "(Bump-Down Region)");
     return 0;
 }
