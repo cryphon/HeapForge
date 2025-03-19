@@ -7,7 +7,10 @@ void bump_up_init(bumpAllocator* allocator, void* memory, size_t size) {
 }
 
 void* bump_up_alloc(bumpAllocator* allocator, size_t size) {
-    if(allocator->curr + size > allocator->end) { 
+    // ensure the address rounds up to the nearest multiple of "align" (8 bytes)
+    size_t aligned_size = (size + 7) & ~7;
+
+    if(allocator->curr + aligned_size > allocator->end) { 
         return NULL;
     }
     // save curr position as result
@@ -30,7 +33,10 @@ void bump_down_init(bumpAllocator* allocator, void* memory, size_t size) {
 
 
 void* bump_down_alloc(bumpAllocator* allocator, size_t size) {
-    if(allocator->curr - size < allocator->start) {
+    // ensure the address rounds up to the nearest multiple of "align" (8 bytes)
+    size_t aligned_size = (size + 7) & ~7;
+
+    if(allocator->curr - aligned_size < allocator->start) {
         return NULL;
     }
     allocator->curr -= size;
